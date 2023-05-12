@@ -19,7 +19,7 @@
 import BigNumber from "bignumber.js";
 import * as helperModels from "./helperModels";
 import { StatementVisitor } from "./statementVisitor";
-import { Id } from "./types";
+import { DateCurrencyAmount, Id } from "./types";
 
 class TagFactory {
   tagMap: Map<string | number, typeof Tag>;
@@ -178,19 +178,19 @@ class TagDateCurrencyAmount extends Tag {
     const regex =
       "^(d{6})" + // Value date
       "([A-Za-z]{3})" + // Currency code
-      "([0-9,]{0,15})"; // Amount
+      "([0-9,]{1,15})"; // Amount
 
     return new RegExp(regex);
   }
 
-  _extractFields(match: string[]) {
+  _extractFields(match: string[]): DateCurrencyAmount {
     return {
-      date: helperModels.Date.parse(
-        match[1].slice(0, 2), // Yeah
+      valueDate: helperModels.Date.parse(
+        match[1].slice(0, 2), // Year
         match[1].slice(2, 4), // Month
         match[1].slice(4, 6) // Day
       ),
-      currency: match[2],
+      currencyCode: match[2],
       // Using `C` to return amount as a positive value. The sign should be set in the implementation
       amount: helperModels.Amount.parse("C", match[3]),
     };

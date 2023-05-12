@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import BigNumber from "bignumber.js";
 export type ParsedStruc = {
   gvc?: string;
   [key: string]: string | undefined;
@@ -15,4 +15,10 @@ export type StatementNumber = {
   statement: string;
   sequence: string;
   section: string;
+};
+
+export type DateCurrencyAmount = {
+  valueDate: Date;
+  currencyCode: string;
+  amount: BigNumber;
 };

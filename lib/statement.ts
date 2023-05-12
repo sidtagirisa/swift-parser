@@ -18,7 +18,7 @@
 
 import BigNumber from "bignumber.js";
 import { Transaction } from "./transaction";
-import { StatementNumber } from "./types";
+import { DateCurrencyAmount, StatementNumber } from "./types";
 /**
  * A statement of financial transactions.
  *
@@ -42,6 +42,10 @@ import { StatementNumber } from "./types";
  * @property {string} informationToAccountOwner - statement level additional details
  * @property {object} messageBlocks - statement message blocks, if present
  * @property {array<Transaction>} transactions - collection of transactions
+ * @property {DateCurrencyAmount} dateCurrencyAmount - tag 32A showing the value date, currency code and amount
+ * for MT900 and MT910 statements
+ * @property {string} orderingInstitution - tag 52A, identifies the institution which instructed the Sender to execute
+ *  the transaction resulting in this debit, when other than the Receiver
  */
 export class Statement {
   transactionReference: string;
@@ -59,7 +63,7 @@ export class Statement {
   closingAvailableBalance: BigNumber;
   forwardAvailableBalance: BigNumber;
   informationToAccountOwner: string;
-  dateCurrencyAmount: string; // TODO: Convert to object type with 3 properties
+  dateCurrencyAmount: DateCurrencyAmount;
   orderingInstitution: string;
   messageBlocks?: {
     [key: string]: {
