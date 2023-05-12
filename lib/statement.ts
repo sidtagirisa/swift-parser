@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +16,9 @@
  *  limitations under the License.
  */
 
-import BigNumber from 'bignumber.js';
-import { Transaction } from './transaction';
-import { StatementNumber } from './types';
+import BigNumber from "bignumber.js";
+import { Transaction } from "./transaction";
+import { StatementNumber } from "./types";
 /**
  * A statement of financial transactions.
  *
@@ -58,6 +59,8 @@ export class Statement {
   closingAvailableBalance: BigNumber;
   forwardAvailableBalance: BigNumber;
   informationToAccountOwner: string;
+  dateCurrencyAmount: string; // TODO: Convert to object type with 3 properties
+  orderingInstitution: string;
   messageBlocks?: {
     [key: string]: {
       value: string;

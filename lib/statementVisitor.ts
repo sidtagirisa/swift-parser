@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -33,6 +34,7 @@ export class StatementVisitor {
   statementDate: Date;
   accountIdentification: string;
   dateCurrencyAmount?: string;
+  orderingInstitution?: string;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -85,6 +87,8 @@ export class StatementVisitor {
       forwardAvailableBalance: this.forwardAvailableBalance,
       informationToAccountOwner: this.informationToAccountOwner.join("\n"),
       messageBlocks: this.messageBlocks,
+      dateCurrencyAmount: this.dateCurrencyAmount,
+      orderingInstitution: this.orderingInstitution,
     });
     return statement;
   }
@@ -105,6 +109,11 @@ export class StatementVisitor {
 
   visitDateCurrencyAmount(tag: Tag) {
     this.dateCurrencyAmount = tag.fields.dateCurrencyAmount;
+    this.pushTag(tag);
+  }
+
+  visitOrderingInstitution(tag: Tag) {
+    this.orderingInstitution = tag.fields.orderingInstitution;
     this.pushTag(tag);
   }
 

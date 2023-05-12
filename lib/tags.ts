@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,6 +30,7 @@ class TagFactory {
       TagRelatedReference,
       TagAccountIdentification,
       TagDateCurrencyAmount,
+      TagOrderingInstitution,
       TagStatementNumber,
       TagDebitAndCreditFloorLimit,
       TagDateTimeIndication,
@@ -196,6 +198,26 @@ class TagDateCurrencyAmount extends Tag {
 
   accept = (visitor: StatementVisitor) => {
     visitor.visitDateCurrencyAmount(this);
+  };
+}
+
+class TagOrderingInstitution extends Tag {
+  static get ID() {
+    return 52;
+  }
+
+  static get PATTERN() {
+    return /^(.{0,35})/;
+  }
+
+  _extractFields(match: string[]) {
+    return {
+      orderingInstitution: match[1],
+    };
+  }
+
+  accept = (visitor: StatementVisitor) => {
+    visitor.visitOrderingInstitution(this);
   };
 }
 
@@ -478,6 +500,7 @@ export default {
   TagRelatedReference,
   TagAccountIdentification,
   TagDateCurrencyAmount,
+  TagOrderingInstitution,
   TagStatementNumber,
   TagDebitAndCreditFloorLimit,
   TagDateTimeIndication,

@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@
  * MT940 parser
  * @module swiftmessageparser
  */
-import Parser from './lib/parser';
+import Parser from "./lib/parser";
 const parser = new Parser();
 
 /**
