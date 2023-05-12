@@ -15,11 +15,11 @@
  *  limitations under the License.
  */
 
-import BigNumber from 'bignumber.js';
-import { Statement } from './statement';
-import { Transaction } from './transaction';
-import { FloorLimit, StatementNumber } from './types';
-import tags, { Tag } from './tags';
+import BigNumber from "bignumber.js";
+import { Statement } from "./statement";
+import { Transaction } from "./transaction";
+import { FloorLimit, StatementNumber } from "./types";
+import tags, { Tag } from "./tags";
 
 export class StatementVisitor {
   tags: Tag[];
@@ -32,6 +32,7 @@ export class StatementVisitor {
   prevTag?: Tag;
   statementDate: Date;
   accountIdentification: string;
+  dateCurrencyAmount?: string;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -82,7 +83,7 @@ export class StatementVisitor {
       closingAvailableBalance: this.closingAvailableBalance,
       forwardAvailableBalanceDate: this.forwardAvailableBalanceDate,
       forwardAvailableBalance: this.forwardAvailableBalance,
-      informationToAccountOwner: this.informationToAccountOwner.join('\n'),
+      informationToAccountOwner: this.informationToAccountOwner.join("\n"),
       messageBlocks: this.messageBlocks,
     });
     return statement;
@@ -90,7 +91,7 @@ export class StatementVisitor {
 
   visitMessageBlock(tag: Tag) {
     Object.entries(tag.fields).forEach(([key, value]) => {
-      if (value && key !== 'EOB') {
+      if (value && key !== "EOB") {
         this.messageBlocks[key] = { value };
       }
     });
@@ -99,6 +100,11 @@ export class StatementVisitor {
 
   visitAccountIdentification(tag: Tag) {
     this.accountIdentification = tag.fields.accountIdentification;
+    this.pushTag(tag);
+  }
+
+  visitDateCurrencyAmount(tag: Tag) {
+    this.dateCurrencyAmount = tag.fields.dateCurrencyAmount;
     this.pushTag(tag);
   }
 
@@ -120,9 +126,9 @@ export class StatementVisitor {
       amount: tag.fields.amount,
     };
 
-    if (tag.fields.dcMark === 'C') {
+    if (tag.fields.dcMark === "C") {
       this.creditFloorLimit = floorLimit;
-    } else if (tag.fields.dcMark === 'D') {
+    } else if (tag.fields.dcMark === "D") {
       this.debitFloorLimit = floorLimit;
     } else {
       this.creditFloorLimit = this.creditFloorLimit || floorLimit;

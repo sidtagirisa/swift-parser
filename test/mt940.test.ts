@@ -19,6 +19,7 @@ import * as mt940MsgType from "../lib/mt940";
 import * as mt942MsgType from "../lib/mt942";
 import BigNumber from "bignumber.js";
 import tags from "../lib/tags";
+
 function expectedStatement() {
   return {
     transactionReference: "B4E08MS9D00A0009",
