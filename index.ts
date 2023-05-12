@@ -23,12 +23,12 @@ import Parser from './lib/parser';
 const parser = new Parser();
 
 /**
- * Parse a SWIFT MT940 or MT942 statement message.
+ * Parse a SWIFT MT940, MT942, MT900 or MT910 statement message.
  *
  * @function
  * @param {object} opts
  * @param {string} opts.data - SWIFT message
- * @param {string} opts.type - message format: mt940 or mt942
+ * @param {string} opts.type - message format: mt940, mt942, mt900 or mt910
  * @param {boolean} [opts.validate=false] - check for semantic errors
  * @returns {array<Statement>} Array of statements
  *

@@ -1,7 +1,8 @@
-# Centrapay SWIFT Parser
+# SWIFT Parser
 
 SWIFT bank statement parser for JavaScript and Typescript (ES2015). Supports [MT 940 Customer
-Statement Message][mt940] and [MT 942 Interim Transaction Report][mt942].
+Statement Message][mt940], [MT 942 Interim Transaction Report][mt942], [MT 900 Confirmation of Debit][mt900] 
+and [MT 910 Confirmation of Credit][mt910].
 
 ## Installation
 
@@ -56,7 +57,7 @@ are additionally validated for:
 | Param    | Type    | Description                                           |
 | -------- | ------- | ----------------------------------------------------- |
 | data     | string  | raw SWIFT message text                                |
-| type     | string  | message format (mt940 or mt942)                       |
+| type     | string  | message format (mt940, mt942, mt900 or mt910)         |
 | validate | boolean | _Optional_ perform additional semantic error checking |
 
 ### Statement
@@ -155,3 +156,5 @@ Forked from [a-fas/mt940][]. Originally inspired by [WoLpH/mt940][].
 [alexander tsybulsky]: https://github.com/a-fas
 [a-fas/mt940]: https://github.com/a-fas/mt940js
 [wolph/mt940]: https://github.com/WoLpH/mt940
+[mt900]: https://www2.swift.com/knowledgecentre/publications/us9m_20190719/2.0?topic=mt900.htm
+[mt910]: https://www2.swift.com/knowledgecentre/publications/us9m_20190719/2.0?topic=mt910.htm
