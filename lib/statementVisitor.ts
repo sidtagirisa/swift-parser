@@ -19,7 +19,12 @@
 import BigNumber from "bignumber.js";
 import { Statement } from "./statement";
 import { Transaction } from "./transaction";
-import { FloorLimit, StatementNumber } from "./types";
+import {
+  DateCurrencyAmount,
+  FloorLimit,
+  SenderToReceiverInformation,
+  StatementNumber,
+} from "./types";
 import tags, { Tag } from "./tags";
 
 export class StatementVisitor {
@@ -33,8 +38,9 @@ export class StatementVisitor {
   prevTag?: Tag;
   statementDate: Date;
   accountIdentification: string;
-  dateCurrencyAmount?: string;
+  dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
+  senderToReceiverInformation: SenderToReceiverInformation;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -114,6 +120,11 @@ export class StatementVisitor {
 
   visitOrderingInstitution(tag: Tag) {
     this.orderingInstitution = tag.fields.orderingInstitution;
+    this.pushTag(tag);
+  }
+
+  visitSenderToReceiverInformation(tag: Tag) {
+    this.senderToReceiverInformation = tag.fields.senderToReceiverInformation;
     this.pushTag(tag);
   }
 

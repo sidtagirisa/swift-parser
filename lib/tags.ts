@@ -31,6 +31,7 @@ class TagFactory {
       TagAccountIdentification,
       TagDateCurrencyAmount,
       TagOrderingInstitution,
+      TagSenderToReceiverInformation,
       TagStatementNumber,
       TagDebitAndCreditFloorLimit,
       TagDateTimeIndication,
@@ -213,6 +214,31 @@ class TagOrderingInstitution extends Tag {
   _extractFields(match: string[]) {
     return {
       orderingInstitution: match[1],
+    };
+  }
+
+  accept = (visitor: StatementVisitor) => {
+    visitor.visitOrderingInstitution(this);
+  };
+}
+
+class TagSenderToReceiverInformation extends Tag {
+  static get ID() {
+    return 72;
+  }
+
+  static get PATTERN() {
+    return /^(.{0,35}\n?){0,5}.{0,35}$/;
+  }
+
+  _extractFields(match: string[]) {
+    return {
+      codesAndDescriptions: match[1],
+      currencyAndAmount: match[2],
+      valueDate: match[3],
+      payAwayAccountNumber: match[4],
+      beneficiaryAccountNumber: match[5],
+      dateAndTime: match[6],
     };
   }
 
@@ -501,6 +527,7 @@ export default {
   TagAccountIdentification,
   TagDateCurrencyAmount,
   TagOrderingInstitution,
+  TagSenderToReceiverInformation,
   TagStatementNumber,
   TagDebitAndCreditFloorLimit,
   TagDateTimeIndication,
