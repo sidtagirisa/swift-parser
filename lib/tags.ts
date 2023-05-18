@@ -47,6 +47,10 @@ class TagFactory {
       TagForwardAvailableBalance,
       TagMessageBlock,
       TagDateTimeIndication13,
+      TagDateCurrencyAmount,
+      TagOrderingCustomer,
+      TagOrderingInstitution,
+      TagSenderToReceiverInformation,
     ].reduce((map, i) => map.set(i.ID, i), new Map());
   }
 

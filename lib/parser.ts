@@ -19,17 +19,17 @@
 import Tags, { Tag } from "./tags";
 import * as mt940MsgType from "./mt940";
 import * as mt942MsgType from "./mt942";
-import * as mt900MsgType from "./mt942";
-import * as mt910MsgType from "./mt942";
+import * as mt900MsgType from "./mt900";
+// import * as mt910MsgType from "./mt942";
 
 const typeMapping = {
   mt940: mt940MsgType,
   mt942: mt942MsgType,
   mt900: mt900MsgType,
-  mt910: mt910MsgType,
+  // mt910: mt910MsgType,
 };
 
-const validTypes = ["mt940", "mt942", "mt900", "mt910"];
+const validTypes = ["mt940", "mt942", "mt900"];
 
 function isValidType(type: string) {
   return validTypes.includes(type);
@@ -41,7 +41,7 @@ export default class Parser {
     validate = false,
   }: {
     data: string;
-    type: "mt940" | "mt942" | "mt900" | "mt910";
+    type: "mt940" | "mt942" | "mt900";
     validate?: boolean;
   }) {
     if (!isValidType(type)) {
