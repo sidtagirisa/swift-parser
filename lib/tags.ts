@@ -19,12 +19,7 @@
 import BigNumber from "bignumber.js";
 import * as helperModels from "./helperModels";
 import { StatementVisitor } from "./statementVisitor";
-import {
-  DateCurrencyAmount,
-  Id,
-  OrderingCustomer,
-  SenderToReceiverInformation,
-} from "./types";
+import { DateCurrencyAmount, Id, OrderingCustomer } from "./types";
 
 class TagFactory {
   tagMap: Map<string | number, typeof Tag>;
@@ -237,19 +232,12 @@ class TagSenderToReceiverInformation extends Tag {
     return /^(.{0,35}\n?){0,5}.{0,35}$/;
   }
 
-  _extractFields(match: string[]): SenderToReceiverInformation {
-    return {
-      codesAndDescriptions: match[1],
-      currencyAndAmount: match[2],
-      valueDate: match[3],
-      payAwayAccountNumber: match[4],
-      beneficiaryAccountNumber: match[5],
-      dateAndTime: match[6],
-    };
+  _extractFields(match: string[]): string {
+    return match[1].trim();
   }
 
   accept = (visitor: StatementVisitor) => {
-    visitor.visitOrderingInstitution(this);
+    visitor.visitSenderToReceiverInformation(this);
   };
 }
 

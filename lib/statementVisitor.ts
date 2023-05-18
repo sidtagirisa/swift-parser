@@ -23,7 +23,6 @@ import {
   DateCurrencyAmount,
   FloorLimit,
   OrderingCustomer,
-  SenderToReceiverInformation,
   StatementNumber,
 } from "./types";
 import tags, { Tag } from "./tags";
@@ -41,10 +40,10 @@ export class StatementVisitor {
   accountIdentification: string;
   dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
-  senderToReceiverInformation: SenderToReceiverInformation;
+  senderToReceiverInformation: string;
   OrderingCustomer?: OrderingCustomer;
   statementNumber: StatementNumber;
-  relatedReference: string;
+  relatedReference?: string;
   transactionReference: string;
   closingBalanceDate: Date;
   closingAvailableBalanceDate: Date;

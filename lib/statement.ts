@@ -18,12 +18,7 @@
 
 import BigNumber from "bignumber.js";
 import { Transaction } from "./transaction";
-import {
-  DateCurrencyAmount,
-  OrderingCustomer,
-  SenderToReceiverInformation,
-  StatementNumber,
-} from "./types";
+import { DateCurrencyAmount, OrderingCustomer, StatementNumber } from "./types";
 /**
  * A statement of financial transactions.
  *
@@ -51,10 +46,12 @@ import {
  * for MT900 and MT910 statements
  * @property {string} orderingInstitution - tag 52A, identifies the institution which instructed the Sender to execute
  *  the transaction resulting in this debit, when other than the Receiver
+ * @property {string} senderToReceiverInformation - tag 72, extra information about the sender and receiver
+ * @property {OrderingCustomer} orderingCustomer - tag 50A, identifies the customer which originated the transaction resulting in this credit
  */
 export class Statement {
   transactionReference: string;
-  relatedReference: string;
+  relatedReference?: string;
   accountIdentification: string;
   number?: StatementNumber;
   statementDate: Date;
@@ -70,7 +67,7 @@ export class Statement {
   informationToAccountOwner: string;
   dateCurrencyAmount: DateCurrencyAmount;
   orderingInstitution: string;
-  senderToReceiverInformation: SenderToReceiverInformation;
+  senderToReceiverInformation?: string;
   orderingCustomer?: OrderingCustomer;
   messageBlocks?: {
     [key: string]: {

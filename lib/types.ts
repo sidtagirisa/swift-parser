@@ -23,15 +23,6 @@ export type DateCurrencyAmount = {
   amount: BigNumber;
 };
 
-export type SenderToReceiverInformation = {
-  codesAndDescriptions?: string;
-  currencyAndAmount?: string;
-  valueDate?: string;
-  payAwayAccountNumber?: string;
-  beneficiaryAccountNumber?: string;
-  dateAndTime?: string;
-};
-
 export type OrderingCustomer = {
   partyIdentifier: string;
   nameAndAddress: string;
