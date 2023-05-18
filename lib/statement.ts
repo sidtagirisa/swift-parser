@@ -51,7 +51,7 @@ import { DateCurrencyAmount, OrderingCustomer, StatementNumber } from "./types";
  */
 export class Statement {
   transactionReference: string;
-  relatedReference?: string;
+  relatedReference: string;
   accountIdentification: string;
   number?: StatementNumber;
   statementDate: Date;
@@ -65,8 +65,8 @@ export class Statement {
   closingAvailableBalance: BigNumber;
   forwardAvailableBalance: BigNumber;
   informationToAccountOwner: string;
-  dateCurrencyAmount: DateCurrencyAmount;
-  orderingInstitution: string;
+  dateCurrencyAmount?: DateCurrencyAmount;
+  orderingInstitution?: string;
   senderToReceiverInformation?: string;
   orderingCustomer?: OrderingCustomer;
   messageBlocks?: {

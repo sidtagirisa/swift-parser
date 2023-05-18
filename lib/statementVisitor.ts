@@ -40,10 +40,10 @@ export class StatementVisitor {
   accountIdentification: string;
   dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
-  senderToReceiverInformation: string;
+  senderToReceiverInformation?: string;
   OrderingCustomer?: OrderingCustomer;
   statementNumber: StatementNumber;
-  relatedReference?: string;
+  relatedReference: string;
   transactionReference: string;
   closingBalanceDate: Date;
   closingAvailableBalanceDate: Date;
