@@ -181,10 +181,7 @@ class TagDateCurrencyAmount extends Tag {
   }
 
   static get PATTERN() {
-    const regex =
-      "^(d{6})" + // Value date
-      "([A-Z]{3})" + // Currency code
-      "([0-9,]{1,15})"; // Amount
+    const regex = /^(\d{6})([A-Z]{3})([0-9,]{1,15})$/;
 
     return new RegExp(regex);
   }
@@ -213,7 +210,7 @@ class TagOrderingInstitution extends Tag {
   }
 
   static get PATTERN() {
-    return /^([A-Z])(.{0,34})$/;
+    return /^([A-Z]{0,34})$/;
   }
 
   _extractFields(match: string[]) {
@@ -233,11 +230,11 @@ class TagSenderToReceiverInformation extends Tag {
   }
 
   static get PATTERN() {
-    return /^(.{0,35}\n?){0,5}.{0,35}$/;
+    return /^([\s\S]{0,35}){0,5}/;
   }
 
   _extractFields(match: string[]): string {
-    return match[1].trim();
+    return match[0].replace('\n', '').trim();
   }
 
   accept = (visitor: StatementVisitor) => {

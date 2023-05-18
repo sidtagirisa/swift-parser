@@ -32,6 +32,11 @@ function expectedStatement() {
     orderingInstitution: "ABSAZAJJXXX",
     senderToReceiverInformation:
       "0000000000CONTRA-0002167016/NDDT/AKD /ACB CONTRA/000010000",
+    closingAvailableBalance: undefined as unknown,
+    closingAvailableBalanceDate: undefined as unknown,
+    closingBalance: undefined as unknown,
+    closingBalanceDate: undefined as unknown,
+    currency: undefined as unknown,
   };
 }
 

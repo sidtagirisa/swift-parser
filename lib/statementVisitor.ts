@@ -117,7 +117,11 @@ export class StatementVisitor {
   }
 
   visitDateCurrencyAmount(tag: Tag) {
-    this.dateCurrencyAmount = tag.fields.dateCurrencyAmount;
+    this.dateCurrencyAmount = {
+      amount: tag.fields.amount,
+      currencyCode: tag.fields.currencyCode,
+      valueDate: tag.fields.valueDate,
+    };
     this.pushTag(tag);
   }
 
@@ -132,7 +136,10 @@ export class StatementVisitor {
   }
 
   visitOrderingCustomer(tag: Tag) {
-    this.OrderingCustomer = tag.fields.OrderingCustomer;
+    this.OrderingCustomer = {
+      nameAndAddress: tag.fields.nameAndAddress,
+      partyIdentifier: tag.fields.partyIdentifier,
+    };
     this.pushTag(tag);
   }
 
