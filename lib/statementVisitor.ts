@@ -22,6 +22,7 @@ import { Transaction } from "./transaction";
 import {
   DateCurrencyAmount,
   FloorLimit,
+  OrderingCustomer,
   SenderToReceiverInformation,
   StatementNumber,
 } from "./types";
@@ -41,6 +42,7 @@ export class StatementVisitor {
   dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
   senderToReceiverInformation: SenderToReceiverInformation;
+  OrderingCustomer?: OrderingCustomer;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -95,6 +97,8 @@ export class StatementVisitor {
       messageBlocks: this.messageBlocks,
       dateCurrencyAmount: this.dateCurrencyAmount,
       orderingInstitution: this.orderingInstitution,
+      senderToReceiverInformation: this.senderToReceiverInformation,
+      orderingCustomer: this.OrderingCustomer,
     });
     return statement;
   }
@@ -125,6 +129,11 @@ export class StatementVisitor {
 
   visitSenderToReceiverInformation(tag: Tag) {
     this.senderToReceiverInformation = tag.fields.senderToReceiverInformation;
+    this.pushTag(tag);
+  }
+
+  visitOrderingCustomer(tag: Tag) {
+    this.OrderingCustomer = tag.fields.OrderingCustomer;
     this.pushTag(tag);
   }
 

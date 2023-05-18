@@ -31,3 +31,8 @@ export type SenderToReceiverInformation = {
   beneficiaryAccountNumber?: string;
   dateAndTime?: string;
 };
+
+export type OrderingCustomer = {
+  partyIdentifier: string;
+  nameAndAddress: string;
+};

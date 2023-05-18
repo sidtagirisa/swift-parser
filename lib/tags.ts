@@ -19,7 +19,12 @@
 import BigNumber from "bignumber.js";
 import * as helperModels from "./helperModels";
 import { StatementVisitor } from "./statementVisitor";
-import { DateCurrencyAmount, Id } from "./types";
+import {
+  DateCurrencyAmount,
+  Id,
+  OrderingCustomer,
+  SenderToReceiverInformation,
+} from "./types";
 
 class TagFactory {
   tagMap: Map<string | number, typeof Tag>;
@@ -32,6 +37,7 @@ class TagFactory {
       TagDateCurrencyAmount,
       TagOrderingInstitution,
       TagSenderToReceiverInformation,
+      TagOrderingCustomer,
       TagStatementNumber,
       TagDebitAndCreditFloorLimit,
       TagDateTimeIndication,
@@ -172,13 +178,13 @@ class TagAccountIdentification extends Tag {
 
 class TagDateCurrencyAmount extends Tag {
   static get ID() {
-    return 32;
+    return "32A";
   }
 
   static get PATTERN() {
     const regex =
       "^(d{6})" + // Value date
-      "([A-Za-z]{3})" + // Currency code
+      "([A-Z]{3})" + // Currency code
       "([0-9,]{1,15})"; // Amount
 
     return new RegExp(regex);
@@ -204,11 +210,11 @@ class TagDateCurrencyAmount extends Tag {
 
 class TagOrderingInstitution extends Tag {
   static get ID() {
-    return 52;
+    return "52A";
   }
 
   static get PATTERN() {
-    return /^(.{0,35})/;
+    return /^([A-Z])(.{0,34})$/;
   }
 
   _extractFields(match: string[]) {
@@ -231,7 +237,7 @@ class TagSenderToReceiverInformation extends Tag {
     return /^(.{0,35}\n?){0,5}.{0,35}$/;
   }
 
-  _extractFields(match: string[]) {
+  _extractFields(match: string[]): SenderToReceiverInformation {
     return {
       codesAndDescriptions: match[1],
       currencyAndAmount: match[2],
@@ -244,6 +250,27 @@ class TagSenderToReceiverInformation extends Tag {
 
   accept = (visitor: StatementVisitor) => {
     visitor.visitOrderingInstitution(this);
+  };
+}
+
+class TagOrderingCustomer extends Tag {
+  static get ID() {
+    return "50a";
+  }
+
+  static get PATTERN() {
+    return /^.{1,34}\n([A-Z]{4})([A-Z]{2})([A-Z0-9]{2})([A-Z0-9]{3})$/;
+  }
+
+  _extractFields(match: string[]): OrderingCustomer {
+    return {
+      partyIdentifier: match[1],
+      nameAndAddress: match[2],
+    };
+  }
+
+  accept = (visitor: StatementVisitor) => {
+    visitor.visitOrderingCustomer(this);
   };
 }
 
@@ -528,6 +555,7 @@ export default {
   TagDateCurrencyAmount,
   TagOrderingInstitution,
   TagSenderToReceiverInformation,
+  TagOrderingCustomer,
   TagStatementNumber,
   TagDebitAndCreditFloorLimit,
   TagDateTimeIndication,

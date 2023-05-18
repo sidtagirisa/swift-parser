@@ -18,7 +18,12 @@
 
 import BigNumber from "bignumber.js";
 import { Transaction } from "./transaction";
-import { DateCurrencyAmount, StatementNumber } from "./types";
+import {
+  DateCurrencyAmount,
+  OrderingCustomer,
+  SenderToReceiverInformation,
+  StatementNumber,
+} from "./types";
 /**
  * A statement of financial transactions.
  *
@@ -65,6 +70,8 @@ export class Statement {
   informationToAccountOwner: string;
   dateCurrencyAmount: DateCurrencyAmount;
   orderingInstitution: string;
+  senderToReceiverInformation: SenderToReceiverInformation;
+  orderingCustomer?: OrderingCustomer;
   messageBlocks?: {
     [key: string]: {
       value: string;
