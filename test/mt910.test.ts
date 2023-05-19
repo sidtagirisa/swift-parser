@@ -16,7 +16,7 @@
  *  limitations under the License.
  */
 
-import * as mt900MsgType from "../lib/mt900";
+import * as mt910MsgType from "../lib/mt910";
 import tags from "../lib/tags";
 import * as helpers from "../lib/helperModels";
 import BigNumber from "bignumber.js";
@@ -26,39 +26,38 @@ import { Statement } from "../lib/statement";
 // TESTS
 ///////////////////////////////////////////////////////////////////////////////
 
-describe("MT900 Message Type", () => {
+describe("MT910 Message Type", () => {
   it("buildStatement", () => {
     const group = [
-      new tags.TagTransactionReferenceNumber("0000000000CONTRA"),
-      new tags.TagRelatedReference("0000000000CONTRA"),
+      new tags.TagTransactionReferenceNumber("0000320568"),
+      new tags.TagRelatedReference("0000320568"),
       new tags.TagAccountIdentification("4047710139"),
-      new tags.TagDateTimeIndication("1908131336+0200"),
-      new tags.TagDateCurrencyAmount("190813ZAR420198,79"),
+      new tags.TagDateTimeIndication("1908140110+0200"),
+      new tags.TagDateCurrencyAmount("190814ZAR157093,78"),
       new tags.TagOrderingInstitution("ABSAZAJJXXX"),
       new tags.TagSenderToReceiverInformation(
-        "0000000000CONTRA-0002167016\n/NDDT/AKD\n/ACB CONTRA      \n/000010000"
+        "0000320568\n/NCOL/TCN\n/NPF CREDIT    \n/000010005"
       ),
     ];
 
-    let result = mt900MsgType.buildStatement({ group });
+    let result = mt910MsgType.buildStatement({ group });
 
     const expected = new Statement({
-      transactionReference: "0000000000CONTRA",
-      relatedReference: "0000000000CONTRA",
+      transactionReference: "0000320568",
+      relatedReference: "0000320568",
       accountIdentification: "4047710139",
       statementDate: helpers.Date.forOffsetDateTime({
-        date: "190813",
-        time: "1336",
-        offset: "+0200",
+        date: "190814",
+        time: "0110",
+        offset: "2",
       }),
       dateCurrencyAmount: {
-        valueDate: helpers.Date.parse("19", "08", "13"),
+        valueDate: helpers.Date.parse("19", "08", "14"),
         currencyCode: "ZAR",
-        amount: BigNumber(420198.79),
+        amount: BigNumber(157093.78),
       },
       orderingInstitution: "ABSAZAJJXXX",
-      senderToReceiverInformation:
-        "0000000000CONTRA-0002167016/NDDT/AKD/ACB CONTRA/000010000",
+      senderToReceiverInformation: "0000320568/NCOL/TCN/NPF CREDIT/000010005",
       messageBlocks: {},
     } as Statement);
 

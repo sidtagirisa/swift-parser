@@ -233,8 +233,12 @@ class TagSenderToReceiverInformation extends Tag {
     return /^([\s\S]{0,35}){0,5}/;
   }
 
-  _extractFields(match: string[]): string {
-    return match[0].replace('\n', '').trim();
+  _extractFields(match: string[]) {
+    return {
+      senderToReceiverInformation: match[0]
+        .replace(/[\r\n]+|\s{2,}|\r\n/g, "")
+        .trim(),
+    };
   }
 
   accept = (visitor: StatementVisitor) => {
