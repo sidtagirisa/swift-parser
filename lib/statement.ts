@@ -85,8 +85,8 @@ export class Statement {
         this.closingAvailableBalance = this.closingBalance;
       }
       if (!this.forwardAvailableBalanceDate) {
-        this.forwardAvailableBalanceDate = this.closingBalanceDate
-          ? new Date(this.closingBalanceDate)
+        this.forwardAvailableBalanceDate = this.closingAvailableBalanceDate
+          ? new Date(this.closingAvailableBalanceDate)
           : undefined;
         this.forwardAvailableBalance = this.closingAvailableBalance;
       }
