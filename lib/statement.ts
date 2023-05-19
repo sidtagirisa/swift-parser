@@ -53,18 +53,18 @@ export class Statement {
   transactionReference: string;
   relatedReference: string;
   accountIdentification: string;
-  number?: StatementNumber;
   statementDate: Date;
-  openingBalanceDate: Date;
-  closingBalanceDate: Date;
-  closingAvailableBalanceDate: Date;
-  forwardAvailableBalanceDate: Date;
-  currency: string;
-  openingBalance: BigNumber;
-  closingBalance: BigNumber;
-  closingAvailableBalance: BigNumber;
-  forwardAvailableBalance: BigNumber;
-  informationToAccountOwner: string;
+  number?: StatementNumber;
+  openingBalanceDate?: Date;
+  closingBalanceDate?: Date;
+  closingAvailableBalanceDate?: Date;
+  forwardAvailableBalanceDate?: Date;
+  currency?: string;
+  openingBalance?: BigNumber;
+  closingBalance?: BigNumber;
+  closingAvailableBalance?: BigNumber;
+  forwardAvailableBalance?: BigNumber;
+  informationToAccountOwner?: string;
   dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
   senderToReceiverInformation?: string;
@@ -79,13 +79,15 @@ export class Statement {
     Object.assign(this, props);
     if (props.closingBalance) {
       if (!this.closingAvailableBalanceDate) {
-        this.closingAvailableBalanceDate = new Date(this.closingBalanceDate);
+        this.closingAvailableBalanceDate = this.closingBalanceDate
+          ? new Date(this.closingBalanceDate)
+          : undefined;
         this.closingAvailableBalance = this.closingBalance;
       }
       if (!this.forwardAvailableBalanceDate) {
-        this.forwardAvailableBalanceDate = new Date(
-          this.closingAvailableBalanceDate
-        );
+        this.forwardAvailableBalanceDate = this.closingBalanceDate
+          ? new Date(this.closingBalanceDate)
+          : undefined;
         this.forwardAvailableBalance = this.closingAvailableBalance;
       }
     }
