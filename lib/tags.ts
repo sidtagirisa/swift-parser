@@ -33,6 +33,7 @@ class TagFactory {
       TagOrderingInstitution,
       TagSenderToReceiverInformation,
       TagOrderingCustomer,
+      TagIntermediary,
       TagStatementNumber,
       TagDebitAndCreditFloorLimit,
       TagDateTimeIndication,
@@ -264,6 +265,26 @@ class TagOrderingCustomer extends Tag {
 
   accept = (visitor: StatementVisitor) => {
     visitor.visitOrderingCustomer(this);
+  };
+}
+
+class TagIntermediary extends Tag {
+  static get ID() {
+    return "56A";
+  }
+
+  static get PATTERN() {
+    return /^([\s\S]{0,70})/;
+  }
+
+  _extractFields(match: string[]) {
+    return {
+      intermediary: match[0].trim(),
+    };
+  }
+
+  accept = (visitor: StatementVisitor) => {
+    visitor.visitIntermediary(this);
   };
 }
 
@@ -549,6 +570,7 @@ export default {
   TagOrderingInstitution,
   TagSenderToReceiverInformation,
   TagOrderingCustomer,
+  TagIntermediary,
   TagStatementNumber,
   TagDebitAndCreditFloorLimit,
   TagDateTimeIndication,

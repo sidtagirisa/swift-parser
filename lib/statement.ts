@@ -48,6 +48,7 @@ import { DateCurrencyAmount, OrderingCustomer, StatementNumber } from "./types";
  *  the transaction resulting in this debit, when other than the Receiver
  * @property {string} senderToReceiverInformation - tag 72, extra information about the sender and receiver
  * @property {OrderingCustomer} orderingCustomer - tag 50A, identifies the customer which originated the transaction resulting in this credit
+ * @property {string} intermediary - tag 56a, This field identifies the financial institution from which the Sender received the funds, when other than the ordering institution.
  */
 export class Statement {
   transactionReference: string;
@@ -69,6 +70,7 @@ export class Statement {
   orderingInstitution?: string;
   senderToReceiverInformation?: string;
   orderingCustomer?: OrderingCustomer;
+  intermediary?: string;
   messageBlocks?: {
     [key: string]: {
       value: string;

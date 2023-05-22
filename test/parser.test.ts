@@ -43,6 +43,7 @@ const MT910_DUMMY_STATEMENT_LINES = [
   ":13D:1908140110+0200",
   ":32A:190814ZAR157093,78",
   ":52A:ABSAZAJJXXX",
+  ":56A:BKTRUS33",
   ":72:0000320568",
   "/NCOL/TCN ",
   "/NPF CREDIT                    ",
@@ -338,6 +339,7 @@ describe("Parser", () => {
 
       expect(result.length).toEqual(1);
       expect(result[0].accountIdentification).toEqual("0000004047710139");
+      expect(result[0].intermediary).toEqual("BKTRUS33");
       expect(result[0].senderToReceiverInformation).toEqual(
         "0000320568/NCOL/TCN/NPF CREDIT/000010005"
       );

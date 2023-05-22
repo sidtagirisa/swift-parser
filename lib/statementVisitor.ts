@@ -41,7 +41,8 @@ export class StatementVisitor {
   dateCurrencyAmount?: DateCurrencyAmount;
   orderingInstitution?: string;
   senderToReceiverInformation?: string;
-  OrderingCustomer?: OrderingCustomer;
+  orderingCustomer?: OrderingCustomer;
+  intermediary?: string;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -97,7 +98,8 @@ export class StatementVisitor {
       dateCurrencyAmount: this.dateCurrencyAmount,
       orderingInstitution: this.orderingInstitution,
       senderToReceiverInformation: this.senderToReceiverInformation,
-      orderingCustomer: this.OrderingCustomer,
+      orderingCustomer: this.orderingCustomer,
+      intermediary: this.intermediary,
     });
     return statement;
   }
@@ -136,10 +138,15 @@ export class StatementVisitor {
   }
 
   visitOrderingCustomer(tag: Tag) {
-    this.OrderingCustomer = {
+    this.orderingCustomer = {
       nameAndAddress: tag.fields.nameAndAddress,
       partyIdentifier: tag.fields.partyIdentifier,
     };
+    this.pushTag(tag);
+  }
+
+  visitIntermediary(tag: Tag) {
+    this.intermediary = tag.fields.intermediary;
     this.pushTag(tag);
   }
 

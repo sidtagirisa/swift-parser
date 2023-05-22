@@ -35,6 +35,7 @@ describe("MT910 Message Type", () => {
       new tags.TagDateTimeIndication("1908140110+0200"),
       new tags.TagDateCurrencyAmount("190814ZAR157093,78"),
       new tags.TagOrderingInstitution("ABSAZAJJXXX"),
+      new tags.TagIntermediary("BKTRUS33"),
       new tags.TagSenderToReceiverInformation(
         "0000320568\n/NCOL/TCN\n/NPF CREDIT    \n/000010005"
       ),
@@ -59,6 +60,7 @@ describe("MT910 Message Type", () => {
       orderingInstitution: "ABSAZAJJXXX",
       senderToReceiverInformation: "0000320568/NCOL/TCN/NPF CREDIT/000010005",
       messageBlocks: {},
+      intermediary: "BKTRUS33",
     } as Statement);
 
     expect(result.transactionReference).toEqual(expected.transactionReference);
@@ -67,6 +69,7 @@ describe("MT910 Message Type", () => {
       expected.accountIdentification
     );
     expect(result.statementDate).toEqual(expected.statementDate);
+    expect(result.intermediary).toEqual(expected.intermediary);
     expect(result.dateCurrencyAmount).toEqual(expected.dateCurrencyAmount);
     expect(result.orderingInstitution).toEqual(expected.orderingInstitution);
     expect(result.senderToReceiverInformation).toEqual(

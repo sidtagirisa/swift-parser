@@ -13,6 +13,7 @@ exports[`Parser Full Examples test-with-NS.mt940x statements 1`] = `
     "forwardAvailableBalance": "2996.53",
     "forwardAvailableBalanceDate": 2017-01-24T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {},
     "number": {
       "section": "",
@@ -93,6 +94,7 @@ UL. SPOKOJNA 3",
     "forwardAvailableBalance": "2971.53",
     "forwardAvailableBalanceDate": 2017-01-31T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {},
     "number": {
       "section": "",
@@ -192,6 +194,7 @@ exports[`Parser Full Examples test1.mt900 1`] = `
     "forwardAvailableBalance": undefined,
     "forwardAvailableBalanceDate": undefined,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01ABSAZAJJAXXX9999999999",
@@ -231,6 +234,7 @@ exports[`Parser Full Examples test1.mt910 1`] = `
     "forwardAvailableBalance": undefined,
     "forwardAvailableBalanceDate": undefined,
     "informationToAccountOwner": "",
+    "intermediary": "BKTRUS33",
     "messageBlocks": {
       "1": {
         "value": "F01ABSAZAJJAXXX9999999999",
@@ -266,6 +270,7 @@ exports[`Parser Full Examples test1.mt940 statements 1`] = `
     "forwardAvailableBalance": "500",
     "forwardAvailableBalanceDate": 2014-05-08T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01KNABNL2HAXXX0000000000",
@@ -318,6 +323,7 @@ WANT DAT IS ZOALS DE NEDERLANDSE BANKEN COMMUNICEREN",
     "forwardAvailableBalance": "798.98",
     "forwardAvailableBalanceDate": 2014-07-30T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01KNABNL2HAXXX0000000000",
@@ -412,6 +418,7 @@ exports[`Parser Full Examples test1.mt942 1`] = `
     "forwardAvailableBalance": undefined,
     "forwardAvailableBalanceDate": undefined,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01ASBBNZ2AAXXX0000000001",
@@ -487,6 +494,7 @@ exports[`Parser Full Examples test2.mt942 1`] = `
     "forwardAvailableBalance": undefined,
     "forwardAvailableBalanceDate": undefined,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01ASBBNZ2AAXXX0000000001",
@@ -580,6 +588,7 @@ exports[`Parser Full Examples testX.mt940 statements 1`] = `
     "forwardAvailableBalance": "500",
     "forwardAvailableBalanceDate": 2014-05-08T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01KNABNL2HAXXX0000000000",
@@ -638,6 +647,7 @@ BIC:XXXXDK22",
     "forwardAvailableBalance": "798.98",
     "forwardAvailableBalanceDate": 2014-07-30T00:00:00.000Z,
     "informationToAccountOwner": "",
+    "intermediary": undefined,
     "messageBlocks": {
       "1": {
         "value": "F01KNABNL2HAXXX0000000000",
