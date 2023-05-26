@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,11 +16,16 @@
  *  limitations under the License.
  */
 
-import BigNumber from 'bignumber.js';
-import { Statement } from './statement';
-import { Transaction } from './transaction';
-import { FloorLimit, StatementNumber } from './types';
-import tags, { Tag } from './tags';
+import BigNumber from "bignumber.js";
+import { Statement } from "./statement";
+import { Transaction } from "./transaction";
+import {
+  DateCurrencyAmount,
+  FloorLimit,
+  OrderingCustomer,
+  StatementNumber,
+} from "./types";
+import tags, { Tag } from "./tags";
 
 export class StatementVisitor {
   tags: Tag[];
@@ -32,6 +38,11 @@ export class StatementVisitor {
   prevTag?: Tag;
   statementDate: Date;
   accountIdentification: string;
+  dateCurrencyAmount?: DateCurrencyAmount;
+  orderingInstitution?: string;
+  senderToReceiverInformation?: string;
+  orderingCustomer?: OrderingCustomer;
+  intermediary?: string;
   statementNumber: StatementNumber;
   relatedReference: string;
   transactionReference: string;
@@ -82,15 +93,20 @@ export class StatementVisitor {
       closingAvailableBalance: this.closingAvailableBalance,
       forwardAvailableBalanceDate: this.forwardAvailableBalanceDate,
       forwardAvailableBalance: this.forwardAvailableBalance,
-      informationToAccountOwner: this.informationToAccountOwner.join('\n'),
+      informationToAccountOwner: this.informationToAccountOwner.join("\n"),
       messageBlocks: this.messageBlocks,
+      dateCurrencyAmount: this.dateCurrencyAmount,
+      orderingInstitution: this.orderingInstitution,
+      senderToReceiverInformation: this.senderToReceiverInformation,
+      orderingCustomer: this.orderingCustomer,
+      intermediary: this.intermediary,
     });
     return statement;
   }
 
   visitMessageBlock(tag: Tag) {
     Object.entries(tag.fields).forEach(([key, value]) => {
-      if (value && key !== 'EOB') {
+      if (value && key !== "EOB") {
         this.messageBlocks[key] = { value };
       }
     });
@@ -99,6 +115,38 @@ export class StatementVisitor {
 
   visitAccountIdentification(tag: Tag) {
     this.accountIdentification = tag.fields.accountIdentification;
+    this.pushTag(tag);
+  }
+
+  visitDateCurrencyAmount(tag: Tag) {
+    this.dateCurrencyAmount = {
+      amount: tag.fields.amount,
+      currencyCode: tag.fields.currencyCode,
+      valueDate: tag.fields.valueDate,
+    };
+    this.pushTag(tag);
+  }
+
+  visitOrderingInstitution(tag: Tag) {
+    this.orderingInstitution = tag.fields.orderingInstitution;
+    this.pushTag(tag);
+  }
+
+  visitSenderToReceiverInformation(tag: Tag) {
+    this.senderToReceiverInformation = tag.fields.senderToReceiverInformation;
+    this.pushTag(tag);
+  }
+
+  visitOrderingCustomer(tag: Tag) {
+    this.orderingCustomer = {
+      nameAndAddress: tag.fields.nameAndAddress,
+      partyIdentifier: tag.fields.partyIdentifier,
+    };
+    this.pushTag(tag);
+  }
+
+  visitIntermediary(tag: Tag) {
+    this.intermediary = tag.fields.intermediary;
     this.pushTag(tag);
   }
 
@@ -120,9 +168,9 @@ export class StatementVisitor {
       amount: tag.fields.amount,
     };
 
-    if (tag.fields.dcMark === 'C') {
+    if (tag.fields.dcMark === "C") {
       this.creditFloorLimit = floorLimit;
-    } else if (tag.fields.dcMark === 'D') {
+    } else if (tag.fields.dcMark === "D") {
       this.debitFloorLimit = floorLimit;
     } else {
       this.creditFloorLimit = this.creditFloorLimit || floorLimit;

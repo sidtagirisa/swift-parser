@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,7 +24,7 @@ import * as fs from "fs";
 import * as glob from "glob";
 import BigNumber from "bignumber.js";
 
-const DUMMY_STATEMENT_LINES = [
+const MT940_DUMMY_STATEMENT_LINES = [
   ":20:B4E08MS9D00A0009",
   ":21:X",
   ":25:123456789",
@@ -33,6 +34,33 @@ const DUMMY_STATEMENT_LINES = [
   ":86:LINE1",
   "LINE2",
   ":62F:C140508EUR500,00",
+];
+
+const MT910_DUMMY_STATEMENT_LINES = [
+  ":20:0000320568",
+  ":21:0000320568",
+  ":25:0000004047710139",
+  ":13D:1908140110+0200",
+  ":32A:190814ZAR157093,78",
+  ":52A:ABSAZAJJXXX",
+  ":56A:BKTRUS33",
+  ":72:0000320568",
+  "/NCOL/TCN ",
+  "/NPF CREDIT                    ",
+  "/000010005  ",
+];
+
+const MT900_DUMMY_STATEMENT_LINES = [
+  ":20:0000000000CONTRA",
+  ":21:0000000000CONTRA",
+  ":25:0000004047710139",
+  ":13D:1908131336+0200",
+  ":32A:190813ZAR420198,79",
+  ":52A:ABSAZAJJXXX",
+  ":72:0000000000CONTRA-0002167016",
+  "/NDDT/AKD   ",
+  "/ACB CONTRA                      ",
+  "/000010000",
 ];
 
 const DUMMY_STATEMENT_LINES_WITH_STRUCTURE = [
@@ -191,6 +219,30 @@ describe("Parser", () => {
         expect(result).toMatchSnapshot();
       });
     });
+
+    glob.sync("*.mt900", { cwd: __dirname }).forEach((examplePath) => {
+      const example = fs.readFileSync(
+        path.resolve(__dirname, examplePath),
+        "utf-8"
+      );
+      it(examplePath, () => {
+        const parser = new Parser();
+        const result = parser.parse({ data: example, type: "mt900" });
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    glob.sync("*.mt910", { cwd: __dirname }).forEach((examplePath) => {
+      const example = fs.readFileSync(
+        path.resolve(__dirname, examplePath),
+        "utf-8"
+      );
+      it(examplePath, () => {
+        const parser = new Parser();
+        const result = parser.parse({ data: example, type: "mt910" });
+        expect(result).toMatchSnapshot();
+      });
+    });
   });
 
   // it("parse fails if type is not valid", () => {
@@ -209,7 +261,7 @@ describe("Parser", () => {
 
     it("_parseLines", () => {
       const parser = new Parser();
-      const result = [...parser._parseLines(DUMMY_STATEMENT_LINES)];
+      const result = [...parser._parseLines(MT940_DUMMY_STATEMENT_LINES)];
       expect(8).toEqual(result.length);
       expect(result[0]).toEqual({
         id: "20",
@@ -254,14 +306,43 @@ describe("Parser", () => {
 
   /* INTEGRATION TEST */
   describe("Integration test", () => {
-    it("typical statement", () => {
+    it("typical mt940 statement", () => {
       const parser = new Parser();
       const result = parser.parse({
-        data: DUMMY_STATEMENT_LINES.join("\n"),
+        data: MT940_DUMMY_STATEMENT_LINES.join("\n"),
         type: "mt940",
       });
       expect(result.length).toEqual(1);
       expect(result[0]).toEqual(expectedMt940Statement());
+    });
+
+    it("typical mt900 statement", () => {
+      const parser = new Parser();
+      const result = parser.parse({
+        data: MT900_DUMMY_STATEMENT_LINES.join("\n"),
+        type: "mt900",
+      });
+
+      expect(result.length).toEqual(1);
+      expect(result[0].accountIdentification).toEqual("0000004047710139");
+      expect(result[0].senderToReceiverInformation).toEqual(
+        "0000000000CONTRA-0002167016/NDDT/AKD/ACB CONTRA/000010000"
+      );
+    });
+
+    it("typical mt910 statement", () => {
+      const parser = new Parser();
+      const result = parser.parse({
+        data: MT910_DUMMY_STATEMENT_LINES.join("\n"),
+        type: "mt910",
+      });
+
+      expect(result.length).toEqual(1);
+      expect(result[0].accountIdentification).toEqual("0000004047710139");
+      expect(result[0].intermediary).toEqual("BKTRUS33");
+      expect(result[0].senderToReceiverInformation).toEqual(
+        "0000320568/NCOL/TCN/NPF CREDIT/000010005"
+      );
     });
 
     it("statement with structured 86", () => {

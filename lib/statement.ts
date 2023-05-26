@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +16,9 @@
  *  limitations under the License.
  */
 
-import BigNumber from 'bignumber.js';
-import { Transaction } from './transaction';
-import { StatementNumber } from './types';
+import BigNumber from "bignumber.js";
+import { Transaction } from "./transaction";
+import { DateCurrencyAmount, OrderingCustomer, StatementNumber } from "./types";
 /**
  * A statement of financial transactions.
  *
@@ -41,23 +42,35 @@ import { StatementNumber } from './types';
  * @property {string} informationToAccountOwner - statement level additional details
  * @property {object} messageBlocks - statement message blocks, if present
  * @property {array<Transaction>} transactions - collection of transactions
+ * @property {DateCurrencyAmount} dateCurrencyAmount - tag 32A showing the value date, currency code and amount
+ * for MT900 and MT910 statements
+ * @property {string} orderingInstitution - tag 52A, identifies the institution which instructed the Sender to execute
+ *  the transaction resulting in this debit, when other than the Receiver
+ * @property {string} senderToReceiverInformation - tag 72, extra information about the sender and receiver
+ * @property {OrderingCustomer} orderingCustomer - tag 50A, identifies the customer which originated the transaction resulting in this credit
+ * @property {string} intermediary - tag 56a, This field identifies the financial institution from which the Sender received the funds, when other than the ordering institution.
  */
 export class Statement {
   transactionReference: string;
   relatedReference: string;
   accountIdentification: string;
-  number?: StatementNumber;
   statementDate: Date;
-  openingBalanceDate: Date;
-  closingBalanceDate: Date;
-  closingAvailableBalanceDate: Date;
-  forwardAvailableBalanceDate: Date;
-  currency: string;
-  openingBalance: BigNumber;
-  closingBalance: BigNumber;
-  closingAvailableBalance: BigNumber;
-  forwardAvailableBalance: BigNumber;
-  informationToAccountOwner: string;
+  number?: StatementNumber;
+  openingBalanceDate?: Date;
+  closingBalanceDate?: Date;
+  closingAvailableBalanceDate?: Date;
+  forwardAvailableBalanceDate?: Date;
+  currency?: string;
+  openingBalance?: BigNumber;
+  closingBalance?: BigNumber;
+  closingAvailableBalance?: BigNumber;
+  forwardAvailableBalance?: BigNumber;
+  informationToAccountOwner?: string;
+  dateCurrencyAmount?: DateCurrencyAmount;
+  orderingInstitution?: string;
+  senderToReceiverInformation?: string;
+  orderingCustomer?: OrderingCustomer;
+  intermediary?: string;
   messageBlocks?: {
     [key: string]: {
       value: string;
@@ -68,13 +81,15 @@ export class Statement {
     Object.assign(this, props);
     if (props.closingBalance) {
       if (!this.closingAvailableBalanceDate) {
-        this.closingAvailableBalanceDate = new Date(this.closingBalanceDate);
+        this.closingAvailableBalanceDate = this.closingBalanceDate
+          ? new Date(this.closingBalanceDate)
+          : undefined;
         this.closingAvailableBalance = this.closingBalance;
       }
       if (!this.forwardAvailableBalanceDate) {
-        this.forwardAvailableBalanceDate = new Date(
-          this.closingAvailableBalanceDate
-        );
+        this.forwardAvailableBalanceDate = this.closingAvailableBalanceDate
+          ? new Date(this.closingAvailableBalanceDate)
+          : undefined;
         this.forwardAvailableBalance = this.closingAvailableBalance;
       }
     }

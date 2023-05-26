@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +16,20 @@
  *  limitations under the License.
  */
 
-import Tags, { Tag } from './tags';
-import * as mt940MsgType from './mt940';
-import * as mt942MsgType from './mt942';
+import Tags, { Tag } from "./tags";
+import * as mt940MsgType from "./mt940";
+import * as mt942MsgType from "./mt942";
+import * as mt900MsgType from "./mt900";
+import * as mt910MsgType from "./mt910";
 
 const typeMapping = {
   mt940: mt940MsgType,
   mt942: mt942MsgType,
+  mt900: mt900MsgType,
+  mt910: mt910MsgType,
 };
 
-const validTypes = ['mt940', 'mt942'];
+const validTypes = ["mt940", "mt942", "mt900", "mt910"];
 
 function isValidType(type: string) {
   return validTypes.includes(type);
@@ -36,7 +41,7 @@ export default class Parser {
     validate = false,
   }: {
     data: string;
-    type: 'mt940' | 'mt942';
+    type: "mt940" | "mt942" | "mt900" | "mt910";
     validate?: boolean;
   }) {
     if (!isValidType(type)) {
@@ -46,12 +51,12 @@ export default class Parser {
     const dataLines = this._splitAndNormalize(data);
     const tagLines = [...this._parseLines(dataLines)];
     const tags = tagLines.map((i) =>
-      factory.createTag(i.id.toString(), i.subId, i.data.join('\n'))
+      factory.createTag(i.id.toString(), i.subId, i.data.join("\n"))
     );
     const tagGroups = this._groupTags(tags);
     const msgType = typeMapping[type];
     const statements = tagGroups.map((group, idx) => {
-      //convert grou[ ]
+      // Convert group
       if (validate) {
         msgType.validateGroup({ group, groupNumber: idx + 1 });
       }
@@ -65,7 +70,7 @@ export default class Parser {
    * @private
    */
   _splitAndNormalize(data: string) {
-    return data.split(/\r?\n/).filter((line) => !!line && line !== '-');
+    return data.split(/\r?\n/).filter((line) => !!line && line !== "-");
   }
 
   /**
@@ -80,19 +85,19 @@ export default class Parser {
     for (let i of lines) {
       // Detect new tag start
       const match = i.match(reTag);
-      if (match || i.startsWith('-}') || i.startsWith('{')) {
+      if (match || i.startsWith("-}") || i.startsWith("{")) {
         if (tag) {
           yield tag;
         } // Yield previous
         tag = match // Start new tag
           ? {
               id: match[1],
-              subId: match[2] || '',
+              subId: match[2] || "",
               data: [i.substr(match[0].length)],
             }
           : {
-              id: 'MB',
-              subId: '',
+              id: "MB",
+              subId: "",
               data: [i.trim()],
             };
       } else {

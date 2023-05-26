@@ -1,6 +1,7 @@
 /*
  *  Copyright 2016 Alexander Tsybulsky and other contributors
  *  Copyright 2020 Centrapay and other contributors
+ *  Copyright 2023 Stitch and other contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,16 +20,16 @@
  * MT940 parser
  * @module swiftmessageparser
  */
-import Parser from './lib/parser';
+import Parser from "./lib/parser";
 const parser = new Parser();
 
 /**
- * Parse a SWIFT MT940 or MT942 statement message.
+ * Parse a SWIFT MT940, MT942, MT900 or MT910 statement message.
  *
  * @function
  * @param {object} opts
  * @param {string} opts.data - SWIFT message
- * @param {string} opts.type - message format: mt940 or mt942
+ * @param {string} opts.type - message format: mt940, mt942, mt900 or mt910
  * @param {boolean} [opts.validate=false] - check for semantic errors
  * @returns {array<Statement>} Array of statements
  *
