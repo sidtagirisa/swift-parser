@@ -52,8 +52,8 @@ describe('Helpers', () => {
         expect(helpers.Amount.parse('C', '123,34')).toEqual(BigNumber(123.34));
       });
 
-      it('should round to 2 fractional digits', () => {
-        expect(helpers.Amount.parse('C', '123,345')).toEqual(BigNumber(123.35));
+      it('should not round any fractional digits', () => {
+        expect(helpers.Amount.parse('C', '123,3456789')).toEqual(BigNumber(123.3456789));
       });
 
       it('should fail if wrong indicator passed', () => {
